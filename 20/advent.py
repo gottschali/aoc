@@ -224,9 +224,38 @@ def day8_2(program):
             program[i] = "jmp", num
     return False
 
-# TODO Insert from other
+input_9 = list(data(9))
+def day_9_1(nums, preamble_len=25):
+    preamble = nums[:preamble_len]
+    rest = nums[preamble_len:]
+    d = deque(preamble, preamble_len)
+    for e in rest:
+        if not any(e == i + j for i in d for j in d):
+            return e
+        d.append(e)
+
+def day_9_2(nums, target=675280050):
+    lo = hi = temp = 0
+    for i, e in enumerate(nums):
+        temp += e
+        while i > lo and temp > target:
+            temp -= nums[lo]
+            lo += 1
+        if temp == target and i > lo:
+            return min(nums[lo:i]) + max(nums[lo:i])
+
 
 input_10 = list(data(10))
+def day_10_1(nums):
+    nums = list(sorted(nums + [0])) # Charging outlet
+    one_diff = three_diff = 0
+    nums.append(nums[-1] + 3) # The charging jolt
+    for i, j in zip(nums, nums[1:]):
+        if j - i == 3: three_diff += 1
+        elif j - i == 1: one_diff += 1
+    print(one_diff, three_diff)
+    return one_diff * three_diff
+
 def day10_2(adapters):
     adapters = list(sorted(adapters + [0]))
     dp = [0 for _ in adapters]
